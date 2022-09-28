@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spring-petclinic
+  name: spring-petclinic
+  namespace: demo-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-petclinic
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: spring-petclinic
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/demo-dev/spring-petclinic@sha256:2f259e6fbe1a2c9947200cc5007da9671e7923da7e4a3f082a93be31823da8a9
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 45
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: spring-petclinic
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8443
+          protocol: TCP
+        - containerPort: 8778
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 45
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
