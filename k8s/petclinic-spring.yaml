@@ -4,7 +4,7 @@ metadata:
   labels:
     app: spring-petclinic
   name: spring-petclinic
-  namespace: demo-prd
+  namespace: prod
 spec:
   replicas: 1
   selector:
@@ -21,7 +21,7 @@ spec:
         app: spring-petclinic
     spec:
       containers:
-      - image: image-registry.openshift-image-registry.svc:5000/demo-dev/spring-petclinic:latest
+      - image: image-registry.openshift-image-registry.svc:5000/demo-dev/spring-petclinic@sha256:370a49e4be3f867e6e99d6b061561379bc86f44d12b59414d8421410ff5b8044
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
