@@ -4,7 +4,7 @@ metadata:
   labels:
     app: spring-petclinic
   name: spring-petclinic
-  namespace: demo-dev
+  namespace: demo-prd
 spec:
   replicas: 1
   selector:
